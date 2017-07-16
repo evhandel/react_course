@@ -1,10 +1,15 @@
 import React, {Component} from 'react'
 import Article from './Article'
 import PropTypes from 'prop-types'
+import Accordeon from '../decorators/accordeon'
 
 class ArticlesList extends Component {
-    state = {
-        openArticleId: null
+    static propTypes = {
+        articles: PropTypes.array.isRequired,
+        //from accordeon decorator
+        toggleOpenItem: PropTypes.func.isRequired,
+        openItemId: PropTypes.number
+
     }
 
     render() {
@@ -13,8 +18,8 @@ class ArticlesList extends Component {
             <li key = {article.id}>
                 <Article
                     article = {article}
-                    isOpen = {article.id === this.state.openArticleId}
-                    toggleOpen = {this.toggleOpenArticle(article.id)}
+                    isOpen = {article.id === this.props.openItemId}
+                    toggleOpen = {this.props.toggleOpenItem(article.id)}
                 />
             </li>
         ))
@@ -25,11 +30,10 @@ class ArticlesList extends Component {
         )
     }
 
-    toggleOpenArticle = openArticleId => () => this.setState({ openArticleId })
 }
 
 ArticlesList.propTypes = {
     articles: PropTypes.array.isRequired
 }
 
-export default ArticlesList
+export default Accordeon(ArticlesList)
