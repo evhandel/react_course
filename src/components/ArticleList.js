@@ -8,9 +8,11 @@ import {deleteArticle} from '../AC'
 
 class ArticlesList extends Component {
     articleRefs = []
+    filterSelected = []
 
     render() {
-        const {articles, deleteArticle, toggleOpenItem, openItemId} = this.props
+        const {deleteArticle, toggleOpenItem, openItemId} = this.props
+        const articles = this.getFilteredArticles()
         const articleElements = articles.map(article => (
             <li key = {article.id}>
                 <Article
@@ -27,6 +29,30 @@ class ArticlesList extends Component {
                 {articleElements}
             </ul>
         )
+    }
+
+    getFilteredArticles() {
+        const {selected, dateRange} = this.props
+
+        console.log('selectedId', this.selectedId, selected)
+        if (!selected.length && !dateRange.from && !dateRange.to) {
+            return this.props.articles
+        }
+        else {
+            this.filterSelected = selected.map(item => item.value)
+            return this.props.articles.filter(this.filterArticles)
+        }
+    }
+
+    filterArticles = (article) => {
+        const {dateRange} = this.props
+        const articleDate = new Date(article.date)
+        let res = true
+
+        if (dateRange.from && dateRange.from > articleDate ) res = false
+        if (dateRange.to && dateRange.to < articleDate ) res = false
+        if (this.filterSelected.length && this.filterSelected.indexOf(article.id) === -1) res = false
+        return res
     }
 
     setContainerRef = (container) => {
@@ -55,6 +81,6 @@ ArticlesList.propTypes = {
 }
 
 export default connect(
-    ({ articles }) => ({ articles }),
+    ({ articles, selected, dateRange }) => ({ articles, selected, dateRange }),
     { deleteArticle }
 )(accordion(ArticlesList))
