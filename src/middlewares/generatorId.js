@@ -1,11 +1,12 @@
 import {ADD_COMMENT} from '../constants'
 
 export default store => next => action => {
-    console.log('---genId', action)
-    console.log('---genId state before', store.getState())
-    if (action.type === ADD_COMMENT || 1) {
-        action.generatedId = Math.random()
+    switch (action.type) {
+        case ADD_COMMENT:
+            const generatedId = (new Date()).toJSON() + Math.floor(Math.random() * 10000)
+            next({...action, generatedId})
+            break;
+        default:
+            next(action)
     }
-    next(action)
-    console.log('---genId state after', store.getState())
 }
