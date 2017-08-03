@@ -1,9 +1,16 @@
 import { ADD_COMMENT } from '../constants'
 import {normalizedComments as defaultComments} from '../fixtures'
 import { arrToMap } from '../helpers'
-import {Map} from 'immutable'
+import {Map, Record} from 'immutable'
 
-export default (comments = arrToMap(defaultComments), action) => {
+const commentRecord = Record({
+    "id": null,
+    "user": "",
+    "text": ""
+
+})
+
+export default (comments = arrToMap(defaultComments, commentRecord), action) => {
     const { type, payload, randomId } = action
 
     switch (type) {
