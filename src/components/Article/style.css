@@ -1,17 +1,19 @@
 .article-enter {
-    opacity: 0.01;
+    max-height: 0;
 }
 
 .article-enter.article-enter-active {
-    opacity: 1;
-    transition: opacity 500ms ease-in;
+    max-height: 500px;
+    transition: all 0.5s;
+    overflow: hidden;
 }
 
 .article-leave {
-    opacity: 1;
+    max-height: 500px;
 }
 
 .article-leave.article-leave-active {
-    opacity: 0.01;
-    transition: opacity 300ms ease-in;
+    max-height: 0;
+    transition: all 0.3s;
+    overflow: hidden;
 }
